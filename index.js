@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
 import pg from "pg";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,8 @@ const port = 3000;
 let sessions = {
     
 };
+
+console.log(sessions);  
 
 const db = new pg.Client({
     user: "postgres",
@@ -24,11 +27,29 @@ db.connect();
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));    
+app.use(cookieParser());
+app.set("view engine", "ejs");
+
+app.use(authMiddleware)
+
+function authMiddleware (req, res, next) {
+    const sessionId = req.cookies.session_id;
+
+    if (sessionId && sessions[sessionId]) {
+            res.locals.loggedIn = true;
+            res.locals.user = sessions[sessionId].user
+    } else {
+        res.locals.loggedIn = false;
+        res.locals.user = null;
+    }
+
+
+    next();
+}
 
 
 app.get("/", (req, res) => {
     res.render("home.ejs");
-    console.log(sessions);
 })
 
 app.get("/login", async(req, res) => {
@@ -49,7 +70,7 @@ app.post("/login", async (req, res) => {
         } else {
             
             const mailPass = result.rows[0].password;
-            console.log(result.rows);
+            // console.log(result.rows);
 
 
             if (mailPass !== password) {
@@ -61,8 +82,8 @@ app.post("/login", async (req, res) => {
     
                 sessions[sessionId] = {
                     name: req.body.userName,
-                    pass: req.body.userPassword
                 }
+
 
                 res.cookie("session_id", sessionId, {
                     httpOnly: true,
@@ -71,7 +92,7 @@ app.post("/login", async (req, res) => {
                 })
 
                 console.log("Login successful")
-                res.redirect("/");
+                res.render("home.ejs");
 
 
             }
@@ -101,7 +122,6 @@ app.post("/signup", async (req, res) => {
         const username = req.body.newUserName
         const email = req.body.newUserMail;
         const password = req.body.newUserPassword;
-        console.log(typeof username);
 
         await db.query("INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3)", [username, email, password]);
         
