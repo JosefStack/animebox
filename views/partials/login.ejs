@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anibox.</title>
+
+    <link rel="stylesheet" href="/styles/login.css">
+
+    <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap" rel="stylesheet"> 
+
+</head>
+
+<body>
+
+
+    <main>
+
+        <span>anibox.</span>
+
+        <div class="signup-container">
+
+            <form class="signup-form" action="/login" method="POST">
+
+                <div>
+                    <input id="signup-email" type="text" name="userName" placeholder="Enter username">
+                    <label for="signup-email">Username</label>
+                </div>
+
+                <div>
+                    <input id="signup-pass" type="text" name="userPassword" placeholder="Enter password here">
+                    <label for="signup-pass">Enter Password</label>
+                </div>
+
+                <div>
+                    <input type="submit" value="Create account">
+                </div>
+
+                <!-- <div>
+                    <input id="signup-pass-confirm" type="text" name="newUserPasswordConfirm"
+                        placeholder="Enter password again">
+                    <label for="signup-pass-confirm">Confirm Password</label>
+                </div> -->
+
+            </form>
+
+            <span>
+                Don't have an account? <a href="/signup">Signup</a>
+            </span>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

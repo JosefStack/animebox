@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animebox</title>
+    <link rel="stylesheet" href="/styles/header.css">
+
+    <!-- icons -->
+    <!-- boxicons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+
+
+    <!-- fonts -->
+    <!-- poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <!-- chillax -->
+    <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+
+    <header>
+
+        <div class="logo">
+            <p>anibox.</p>
+        </div>
+
+
+
+        <form class="searchBox" action="/search" method="POST">
+            <input type="text" placeholder="Search..">
+        </form>
+
+        <div class="header-right">
+            <i class="bx bx-search"></i>
+            <i class="bx bx-x"></i>
+            <div class="header-signup-login">
+
+                <form action="/login" method="GET">
+                    <input class="login-signup-button" type="submit" value="Login">
+                </form>
+                <form action="/signup" method="GET">
+                    <input class="login-signup-button" type="submit" value="Sign up">
+                </form>
+            </div>
+        </div>
+
+
+    </header>
+
+
+
+
+</body>
+
+<script>
+    const searchBtn = document.querySelector(".bx-search");
+    const logo = document.querySelector(".logo");
+    const searchBox = document.querySelector(".searchBox")
+    const login = document.querySelector(".header-signup-login");
+    const closeBtn = document.querySelector(".bx-x");
+
+    console.log(logo);
+
+    searchBtn.addEventListener("click", () => {
+        searchBtn.classList.toggle("hidden");
+        logo.classList.toggle("hidden");
+        searchBox.classList.toggle("visible");
+        closeBtn.classList.toggle("visible");
+        login.classList.toggle("hidden");
+    })
+
+    closeBtn.addEventListener("click", () => {
+        searchBtn.classList.toggle("hidden");
+        logo.classList.toggle("hidden");
+        searchBox.classList.toggle("visible");
+        closeBtn.classList.toggle("visible");
+        login.classList.toggle("hidden");
+    })
+
+</script>
+
+</html>
