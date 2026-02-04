@@ -144,6 +144,15 @@ app.post("/login", async (req, res) => {
 
 })
 
+
+app.get("/logout", async(req, res) => {
+    const sessionId = req.cookies.session_id;
+    delete sessions[sessionId];
+
+    res.redirect("/");
+})
+
+
 app.get("/signup", async (req, res) => {
     res.render("partials/signup.ejs")
 })
