@@ -224,5 +224,8 @@ header .logo {
         display: inline !important;
     }
 
+    .profile-tab {
+        right: 15px;
+    }
 
 }
