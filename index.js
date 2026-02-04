@@ -7,11 +7,13 @@ import cookieParser from "cookie-parser";
 const app = express();
 const port = 3000;
 
+const BASE_API = "https://api.jikan.moe/v4";
+
 let sessions = {
     
 };
 
-console.log(sessions);  
+
 
 const db = new pg.Client({
     user: "postgres",
@@ -37,7 +39,7 @@ function authMiddleware (req, res, next) {
 
     if (sessionId && sessions[sessionId]) {
             res.locals.loggedIn = true;
-            res.locals.user = sessions[sessionId].user
+            res.locals.user = sessions[sessionId].name;
     } else {
         res.locals.loggedIn = false;
         res.locals.user = null;
@@ -48,8 +50,33 @@ function authMiddleware (req, res, next) {
 }
 
 
-app.get("/", (req, res) => {
-    res.render("home.ejs");
+app.get("/", async (req, res) => {
+    const URL = BASE_API + "/top/anime";
+    console.log(URL);
+
+    const response = await axios.get(URL);
+    const topAnime = response.data.data.slice(0, 6);
+    // console.log(topAnime);
+
+    const topAnimeFiltered = topAnime.map(anime => ({
+        id : anime.mal_id,
+        images: anime.images.jpg.image_url,
+        name: anime.title_english,
+        episodes: anime.episodes,
+        status: anime.status,
+        rank: anime.rank,
+        favourites: anime.favorites,
+        people: anime.scored_by,
+        rating: anime.score
+    }))
+
+    console.log(topAnimeFiltered);
+
+
+    res.render("home.ejs", {
+        topAnime1: topAnimeFiltered.slice(0, 3),
+        topAnime2: topAnimeFiltered.slice(3, 6)
+    });
 })
 
 app.get("/login", async(req, res) => {
@@ -66,6 +93,7 @@ app.post("/login", async (req, res) => {
 
         if (result.rows.length ===   0 ) {
             console.log(`Invalid credentials!`)
+            res.locals.message = "Invalid credentials!"
             res.redirect("/login");
         } else {
             
@@ -75,24 +103,26 @@ app.post("/login", async (req, res) => {
 
             if (mailPass !== password) {
                 console.log(`Invald credentials.`)
+                res.locals.message = "Incorrect Password!"
                 res.redirect("/login");
             }
             else {
-                const sessionId = Math.random();
+                const session_id = Math.random();
     
-                sessions[sessionId] = {
-                    name: req.body.userName,
+                sessions[session_id] = {
+                    name: userName,
                 }
+                
 
-
-                res.cookie("session_id", sessionId, {
+                res.cookie("session_id", session_id, {
                     httpOnly: true,
                     sameSite: "lax",
                     maxAge: 1000 * 60 * 60
                 })
 
                 console.log("Login successful")
-                res.render("home.ejs");
+                res.locals.message = "Login successful"
+                res.redirect("/");
 
 
             }
@@ -107,6 +137,7 @@ app.post("/login", async (req, res) => {
     }   
     catch (err) {
         console.log(`Login failed: ${err.stack}`);
+        res.locals.message = "Something went wrong"
     }
     
 
@@ -132,6 +163,7 @@ app.post("/signup", async (req, res) => {
     }
     catch (err) {
         console.log(`Singup failed: ${err.stack}`)
+        res.locals.message = "Something went wrong."
         res.redirect("/signup");
     }
 

@@ -85,7 +85,45 @@ header .logo {
 }
 
 
+.profile-icon {
+    width: 35px;
+    height: 35px;
+    border: 2px solid rgb(139, 139, 139);
+    /* background-color: rgb(139, 139, 139); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
 
+.ai-person {
+    font-size: 22px;
+    font-weight: lighter;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    background-color: rgb(139, 139, 139);
+    border-radius: 50%;
+}
+
+.profile-tab {
+    position: absolute;
+    z-index: 10;
+    top: 100px;
+    right: 20px;
+    background-color: black;
+    padding: 20px;
+}
+
+.profile-tab .profile-top {
+    display: flex;
+}
+
+.profile-tab a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
 
 
 @media (max-width:768px) {

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animebox</title>
+
+    <script src="https://unpkg.com/akar-icons-fonts"></script>
     <link rel="stylesheet" href="/styles/header.css">
 
     <!-- icons -->
@@ -48,19 +50,52 @@
             <div class="header-signup-login">
 
                 <% if (!(locals.loggedIn)) { %>
-                    <% console.log(locals.user) %>
                     <form action="/login" method="GET">
                         <input class="login-signup-button" type="submit" value="Login">
                     </form>
                     <form action="/signup" method="GET">
                         <input class="login-signup-button" type="submit" value="Sign up">
                     </form>
-                    <% } %>
+                    <% } else { %>
+
+
+                        <div class="profile-icon">
+                            <i class="ai-person"></i>
+                        </div>
+
+
+                        <div class="profile-tab">
+                            <div class="profile-top">
+                                <a href=""></a>
+                                <div class="profile-icon">
+                                    <i class="ai-person"></i>
+                                </div>
+                                </a>
+                                <div class="profile-tab-name">
+                                    <a href="">
+                                        <%= locals.user %>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="profile-sections">
+                                <a href="">View Profile</a>
+                                <a href="">Favourites</a>
+                                <a href="">Reviews</a>
+                            </div>
+
+                            <div class="logout-button">
+                                <a href="">Logout</a>
+                            </div>
+                        </div>
+
+
+                        <% } %>
             </div>
         </div>
 
 
-        
+
     </header>
 
 

@@ -1,11 +1,129 @@
 <%- include("./partials/header.ejs") %>
 
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles/home.css">
+    </head>
+
+    <body>
+
+
+        <section id="home">
+
+            <div class="home-left">
+
+                <div class="home-left-wrapper">
+                    <h1>anibox.</h1>
+                    <p>The best site to get the latest anime and manga information</p>
+                </div>
 
 
 
+            </div>
+
+            <div class="home-right">
 
 
 
+                <div class="home-right-top home-right-sections">
+                    <% topAnime1.forEach((anime)=> { %>
+
+                        <div class="topAnime-grid-item">
+                            <div class="grid-item-img-left">
+                                <img src="<%= anime.images %>" alt="<%= anime.name %>">
+                            </div>
+                            <div class="grid-item-desc-right">
+                                <div class="airing-box">
+                                    <span>
+                                        <%= anime.status %>
+                                    </span>
+                                </div>
+                                <p><%= anime.episodes %> episodes
+                                </p>
+                                <p class="title">
+                                    <%= anime.name %>
+                                </p>
+
+                                <div class="rating-ranking">
+                                    <div class="rating-container">
+                                        <div class="rating">
+                                            <p>
+                                                <%= anime.rating %>
+                                            </p>
+                                        </div>
+                                        <p>
+                                            <%= anime.people%> users
+                                        </p>
+                                    </div>
+                                    <div class="ranking-container">
+                                        <p>#<%= anime.rank %></p>
+                                        <p>Ranking</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
 
 
-<%- include("./partials/footer.ejs") %>
+                <div class="home-right-bottom home-right-sections">
+                    <% topAnime2.forEach((anime)=> { %>
+
+                        <div class="topAnime-grid-item">
+                            <div class="grid-item-img-left">
+                                <img src="<%= anime.images %>" alt="<%= anime.name %>">
+                            </div>
+                            <div class="grid-item-desc-right">
+                                <div class="airing-box">
+                                    <span>
+                                        <%= anime.status %>
+                                    </span>
+                                </div>
+                                <p><%= anime.episodes %> episodes
+                                </p>
+                                <p class="title">
+                                    <%= anime.name %>
+                                </p>
+
+                                <div class="rating-ranking">
+                                    <div class="rating-container">
+                                        <div class="rating">
+                                            <p>
+                                                <%= anime.rating %>
+                                            </p>
+                                        </div>
+                                        <p>
+                                            <%= anime.people%> users
+                                        </p>
+                                    </div>
+
+                                    <div class="ranking-container">
+                                        <p>#<%= anime.rank %></p>
+                                        <p>Ranking</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <% }) %>
+
+
+
+                </div>
+
+        </section>
+
+
+
+    </body>
+
+    </html>
+
+
+
+    <%- include("./partials/footer.ejs") %>
