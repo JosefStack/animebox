@@ -181,6 +181,9 @@ app.post("/signup", async (req, res) => {
 
 app.get("/anime", async (req, res) => {
 
+
+    res.render("partials/anime.ejs")
+
 })
 
 app.get("/anime/:id", async (req, res) => {
