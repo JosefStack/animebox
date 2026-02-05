@@ -2,20 +2,70 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="styles/anime.css">
+    <!DOCTYPE html>
+    <html lang="en">
 
-</head>
-<body>
-    
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <link rel="stylesheet" href="styles/anime.css">
+        <link rel="stylesheet" href="styles/home.css">
+    </head>
+
+    <body>
 
 
-<%- include("footer.ejs") %>
+        <div class="anime-listings-grid-container">
+            <% anime.forEach((anime)=> {%>
+                <a href="/anime/<%= anime.id %>">
+                    <div class="topAnime-grid-item">
+                        <div class="grid-item-img-left">
+                            <img src="<%= anime.images %>" alt="<%= anime.name %>">
+                        </div>
+                        <div class="grid-item-desc-right">
+                            <div class="airing-box">
+                                <span>
+                                    <%= anime.status %>
+                                </span>
+                            </div>
+                            <p>
+                                <%= anime.episodes %> episodes
+                            </p>
+                            <p class="title">
+                                <%= anime.name %>
+                            </p>
+
+                            <div class="rating-ranking">
+                                <div class="rating-container">
+                                    <div class="rating">
+                                        <p>
+                                            <%= anime.rating %>
+                                        </p>
+                                    </div>
+                                    <p>
+                                        <%= anime.people%> users
+                                    </p>
+                                </div>
+                                <div class="ranking-container">
+                                    <p>#<%= anime.rank %>
+                                    </p>
+                                    <p>Ranking</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+
+                <% }) %>
+        </div>
+
+
+    </body>
+
+    </html>
+
+
+
+    <%- include("footer.ejs") %>

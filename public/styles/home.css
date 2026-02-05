@@ -74,6 +74,7 @@ a {
 
 .grid-item-img-left img{
     width: 130px;
+    height: 180px;
     border-radius: 10px;
     display: block;
 }

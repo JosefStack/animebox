@@ -1,0 +1,23 @@
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.info-container {
+    display: flex;
+}
+
+.info-left {
+    display: flex;
+}
+
+.episode-info {
+    display: flex;
+}
+
+.rating-ranking {
+    display: flex;
+}
+
