@@ -49,7 +49,7 @@
                         <input class="favourites-btn" type="submit" value="Add to Favourites">
                     </form>
                     <% } else { %>
-                        <button class="favourites-btn" onclick="">Add to Favourites</button>
+                        <button class="favourites-btn" onclick="favouritesAlert()">Add to Favourites</button>
 
                         <div class="favourites-alert">
                             <p>Action requires login!</p>
@@ -74,7 +74,15 @@
 
 <script>
 
-    function favouritesAlert(message) {
+    function favouritesAlert() {
+
+        const alertbox = document.querySelector(".favourites-alert");
+
+        alertbox.style.transform = "translateY(65px)";
+
+        setTimeout(() => {
+            alertbox.style.transform = "translateY(-65px)";
+        }, 1500)
 
     }
     

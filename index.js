@@ -197,25 +197,114 @@ app.get("/anime/:id", async (req, res) => {
         genres: response.data.data.genres,
         relations: response.data.data.relations,
         image: response.data.data.images.jpg.image_url,
-    }
+    };
 
     // console.log(filtered);
     res.render("partials/animedesc.ejs", {
         info: filtered,
-    })
+    });
 });
 
 app.get("/profile", async (req, res) => {
     res.send("profile");
 });
 
-app.get("/favourites", async (req, res) => { });
+app.get("/favourites", async (req, res) => {
+    const userId = sessions[req.cookies.session_id].name;
+
+    try {
+        const result = await db.query(
+            "SELECT * FROM favourites WHERE user_name=$1",
+            [userId],
+        );
+        const animeId = result.rows;
+
+        const favouriteIds = [];
+        const favouriteData = [];
+
+        result.rows.forEach((row) => {
+            favouriteIds.push(row.anime_id);
+        });
+
+        for (const favourite of favouriteIds) {
+            const URL = BASE_API + `/anime/${favourite}/full`;
+            console.log(URL);
+            const response = await axios.get(URL);
+
+            favouriteData.push(response.data.data);
+        }
+
+        const filtered = favouriteData.map((favourite) => ({
+            id: favourite.mal_id,
+            // name_english: favourite.title_english,
+            // name_jap: favourite.title,
+            name: favourite.title_english,
+            episodes: favourite.episodes,
+            aired: favourite.aired.string,
+            duration: favourite.duration,
+            ageRating: favourite.rating,
+            rating: favourite.score,
+            // rated_by: favourite.scored_by,
+            people: favourite.scored_by,
+            rank: favourite.rank,
+            favourites: favourite.favorites,
+            synopsis: favourite.synopsis,
+            background: favourite.background,
+            genres: favourite.genres,
+            relations: favourite.relations,
+            images: favourite.images.jpg.image_url,
+        }));
+
+        // console.log(filtered);
+
+        res.render("partials/favourites.ejs", {
+            favourites: filtered,
+        });
+    } catch (err) {
+        console.log(`Failed to retrieve favourites: ${err.stack}`);
+        res.render("partials/favourites.ejs", {
+            error: "Failed to retrieve favourites!",
+        });
+    }
+
+});
 
 app.post("/new/favourite", async (req, res) => {
+    try {
+        await db.query(`INSERT INTO favourites VALUES ($1, $2)`, [
+            req.body.userName,
+            parseInt(req.body.animeId),
+        ]);
+    } catch (err) {
+        console.log(`Failed to add favourite: ${err.stack}`);
+    }
 
-    res.redirect(`/anime/${req.body.animeId}`)
+    res.redirect(`/anime/${req.body.animeId}`);
+});
 
-    
+app.post("/delete/favourite", async (req, res) => {
+    const userName = req.body.userId;
+    const animeId = parseInt(req.body.animeId);
+
+
+    console.log(userName, animeId);
+
+    try {
+
+        await db.query("DELETE FROM favourites WHERE user_name=$1 AND anime_id=$2",
+            [userName, animeId]
+        );
+
+        res.redirect("/favourites");
+
+    }
+
+    catch (err) {
+        // console.log(`Failed to remove favourite: ${err.stack}`);
+        console.log("err");
+        res.redirect("/favourites")
+    }
+
 })
 
 app.get("/reviews", async (req, res) => { });

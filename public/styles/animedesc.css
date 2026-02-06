@@ -21,3 +21,24 @@ a {
     display: flex;
 }
 
+.favourites-alert {
+    border-radius: 20px;
+
+    border: 1px solid rgba(139, 139, 139, 1);
+    background-color: rgb(39, 37, 55);
+    padding: 10px 0;
+    width: 350px;
+    height: 25px;
+
+    text-align: center;
+
+    position: absolute;
+    top: -50px;
+
+    left: calc(50% - 175px);
+
+    transition: 0.5s;
+
+    color: rgba(218, 63, 63, 0.905);
+}
+
