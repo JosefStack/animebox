@@ -1,70 +1,72 @@
 <%- include("header.ejs") %>
 
 
-
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <link rel="stylesheet" href="styles/anime.css">
-        <link rel="stylesheet" href="styles/home.css">
+
     </head>
 
     <body>
 
+        <div class="top-cards-grid-container">
+            <% anime.forEach((anime)=> { %>
 
-        <div class="anime-listings-grid-container">
-            <% anime.forEach((anime)=> {%>
-                <a href="/anime/<%= anime.id %>">
-                    <div class="topAnime-grid-item">
-                        <div class="grid-item-img-left">
+                <a href="/anime/<%= anime.id %>" class="card-link">
+                    <div class="card-container">
+
+                        <div class="banner-container">
+                            <div class="card-hover-banner">
+                                <div class="card-hover-banner-top">
+                                    <p>
+                                        <%= anime.name %>
+                                    </p>
+                                </div>
+
+                                <div class="card-hover-banner-bottom">
+                                    <p>#<%= anime.rank %>
+                                    </p>
+                                    <p>
+                                        <%= anime.episodes %> episodes
+                                    </p>
+
+                                    <p><i class="ai-star"></i>
+                                        <%= anime.rating %>
+                                    </p>
+                                </div>
+                            </div>
+
                             <img src="<%= anime.images %>" alt="<%= anime.name %>">
                         </div>
-                        <div class="grid-item-desc-right">
-                            <div class="airing-box">
-                                <span>
-                                    <%= anime.status %>
-                                </span>
-                            </div>
-                            <p>
-                                <%= anime.episodes %> episodes
-                            </p>
+
+                        <div class="text-container">
                             <p class="title">
                                 <%= anime.name %>
                             </p>
-
-                            <div class="rating-ranking">
-                                <div class="rating-container">
-                                    <div class="rating">
-                                        <p>
-                                            <%= anime.rating %>
-                                        </p>
-                                    </div>
-                                    <p>
-                                        <%= anime.people%> users
-                                    </p>
-                                </div>
-                                <div class="ranking-container">
-                                    <p>#<%= anime.rank %>
-                                    </p>
-                                    <p>Ranking</p>
-                                </div>
+                            <div class="analytics">
+                                <p>#<%= anime.rank %>
+                                </p>
+                                <span>
+                                    <%= anime.views || "92.4K" %>
+                                </span>
                             </div>
-
                         </div>
+
                     </div>
                 </a>
 
                 <% }) %>
         </div>
 
-
     </body>
 
     </html>
+
+
 
 
 

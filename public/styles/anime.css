@@ -1,10 +1,169 @@
+/* GLOBAL RESET */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* kills horizontal scroll */
+}
+
 a {
     color: white;
     text-decoration: none;
 }
 
-.anime-listings-grid-container {
-    padding: 40px;
+/* GRID */
+.top-cards-grid-container {
+    padding: 24px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+/* CARD */
+.card-link {
+    display: block;
+    width: 100%;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    /* critical fix */
+}
+
+/* BANNER / IMAGE */
+.banner-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    /* 🔥 controls banner size */
+    border-radius: 9px;
+    overflow: hidden;
+    background: #111;
+}
+
+.banner-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* HOVER OVERLAY */
+.card-hover-banner {
+    position: absolute;
+    inset: 0;
+    background: rgba(230, 230, 230, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1;
+
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.banner-container:hover .card-hover-banner {
+    opacity: 1;
+}
+
+/* HOVER TEXT */
+.card-hover-banner-top,
+.card-hover-banner-bottom {
+    padding: 16px;
+}
+
+.card-hover-banner-top p {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-hover-banner-bottom p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.4;
+}
+
+.card-hover-banner-bottom p:first-child {
+    background: black;
+    color: white;
+    width: fit-content;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* TEXT BELOW CARD */
+.text-container {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.text-container .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.analytics {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.analytics span {
+    color: rgb(151, 151, 151);
+    font-weight: 500;
+}
+
+/* HOVER DIM */
+.text-container p,
+.text-container span {
+    transition: filter 0.25s ease;
+}
+
+.card-link:hover .text-container p,
+.card-link:hover .text-container span {
+    filter: brightness(0.75);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1400px) {
+    .top-cards-grid-container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    .top-cards-grid-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .top-cards-grid-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
+    .top-cards-grid-container {
+        grid-template-columns: 1fr;
+    }
 }

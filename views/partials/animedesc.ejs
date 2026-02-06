@@ -1,98 +1,178 @@
 <%- include("header.ejs") %>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/animedesc.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles/animedesc.css">
+    </head>
+
+    <body>
 
 
-    <div class="info-container">
+        <div class="container">
+            <div class="background-img"></div>
+            <div class="info-container">
 
-        <div class="info-left">
 
-            <div class="info-left-img-container">
-                <img src="<%= info.image %>" alt="">
-            </div>
-            <div class="info-left-desc">
-                <p class="anime-name">
-                    <%= info.name_english %>
-                </p>
-                <div class="episode-info">
-                    <p><%= info.episodes %> episodes</p>
-                    <p><%= info.duration %></p>
-                </div>
-                <div class="rating-ranking">
-                    <div class="rating">
-                        <p><%= info.rating %></p>
-                        <p><%= info.rated_by %></p>
+                <div class="info-left">
+
+                    <div class="info-left-img-container">
+                        <img src="<%= info.image %>" alt="">
                     </div>
-                    <div class="ranking">
-                        <p><%= info.rank %></p>
-                        <p>Ranking</p>
-                    </div>
-                </div>
 
-                <div class="age_rating">
-                    <p><%= info.age_rating %></p>
-                </div>
-
-                <div class="favourites-btn-container">
-                    <% if(locals.user) { %>
-                    <form action="/new/favourite" method="POST">
-                        <input hidden type="text" name="userName" value="<%= user %>">
-                        <input hidden type="text" name="animeId" value="<%= info.id %>">
-                        <input class="favourites-btn" type="submit" value="Add to Favourites">
-                    </form>
-                    <% } else { %>
-                        <button class="favourites-btn" onclick="favouritesAlert()">Add to Favourites</button>
-
-                        <div class="favourites-alert">
-                            <p>Action requires login!</p>
+                    <div class="info-left-desc">
+                        <p class="anime-name">
+                            <%= info.name_english %>
+                        </p>
+                        <div class="episode-info">
+                            <p>
+                                <%= info.episodes %> episodes
+                            </p>
+                            <div class="separation-circle"></div>
+                            <p>
+                                <%= info.duration %>
+                            </p>
                         </div>
-                        <% } %>
+                        <div class="rating-ranking">
+                            <div class="rating">
+                                <div>
+                                    <i class="ai-star"></i>
+                                    <%= info.rating %>
+                                </div>
+                                <p class="rating-ranking-sub-text">
+                                    <%= info.rated_by %> people
+                                </p>
+                            </div>
+                            <div class="ranking">
+                                <p>
+                                    #<%= info.rank %>
+                                </p>
+                                <p class="rating-ranking-sub-text">Ranking</p>
+                            </div>
+                        </div>
+
+                        <div class="age_rating">
+                            <p>
+                                <%= info.age_rating %>
+                            </p>
+                        </div>
+
+                        <div class="favourites-btn-container">
+                            <% if(locals.user) { %>
+                                <form action="/new/favourite" method="POST">
+                                    <input hidden type="text" name="userName" value="<%= user %>">
+                                    <input hidden type="text" name="animeId" value="<%= info.id %>">
+                                    <input class="favourites-btn" type="submit" value="Add to Favourites">
+                                </form>
+                                <% } else { %>
+                                    <button class="favourites-btn" onclick="favouritesAlert()">Add to
+                                        Favourites</button>
+
+                                    <div class="favourites-alert">
+                                        <p>Action requires login!</p>
+                                    </div>
+                                    <% } %>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <%= info.synopsis %>
+                            </p>
+                        </div>
+
+                    </div>
+
 
                 </div>
+                <div class="info-right">
+                    <p>Japanese: <%= info.name_jap %>
+                    </p>
+                    <p>Status: <%= info.status %>
+                    </p>
+                    <p>Aired: <%= info.aired %>
+                    </p>
+                    <p>Duration: <%= info.duration %>
+                    </p>
+                    <p>MAL Score: <%= info.rating %>
+                    </p>
+                    <p>Favourites: <%= info.favourites %>
+                    </p>
+
+                    <div class="genres">
+                        <p>Genres: </p>
+                        <% info.genres.forEach((genre)=> { %>
+
+                            <span>
+                                <%= genre.name %>
+                            </span>
+
+                            <% }) %>
+                    </div>
+
+                    <div class="studios">
+                        <p>Studios:</p>
+                        
+
+                            <span>
+                                <% info.studios.forEach((studio)=> { %>
+                                <%= studio.name %>
+                                <% }) %>
+                            </span>
+
+                            
+
+                    </div>
+                    <div class="producers">
+                        <p>Producers: </p>
+                        
+
+                            <span>
+                                <% info.producers.forEach((producer)=> { %>
+                                <%= producer.name %>, 
+                                <% }) %>
+                            </span>
+
+                            
+
+                    </div>
+                </div>
+
             </div>
 
 
         </div>
-        <div class="info-right"></div>
-
-    </div>
-
-    
 
 
 
-</body>
+
+    </body>
 
 
-<script>
+    <script>
 
-    function favouritesAlert() {
+        function favouritesAlert() {
 
-        const alertbox = document.querySelector(".favourites-alert");
+            const alertbox = document.querySelector(".favourites-alert");
 
-        alertbox.style.transform = "translateY(65px)";
+            alertbox.style.transform = "translateY(135px)";
 
-        setTimeout(() => {
-            alertbox.style.transform = "translateY(-65px)";
-        }, 1500)
+            setTimeout(() => {
+                alertbox.style.transform = "translateY(-65px)";
+            }, 1500)
 
-    }
-    
-
-
-</script>
-
-
-</html>
+        }
 
 
 
-<%- include("footer.ejs") %>
+    </script>
+
+
+    </html>
+
+
+
+    <%- include("footer.ejs") %>

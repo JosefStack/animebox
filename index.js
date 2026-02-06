@@ -181,6 +181,7 @@ app.get("/anime/:id", async (req, res) => {
 
     // console.log(response);
     const filtered = {
+        status: response.data.data.status,
         id: response.data.data.mal_id,
         name_english: response.data.data.title_english,
         name_jap: response.data.data.title,
@@ -197,6 +198,8 @@ app.get("/anime/:id", async (req, res) => {
         genres: response.data.data.genres,
         relations: response.data.data.relations,
         image: response.data.data.images.jpg.image_url,
+        studios: response.data.data.studios,
+        producers: response.data.data.producers
     };
 
     // console.log(filtered);
@@ -270,6 +273,7 @@ app.get("/favourites", async (req, res) => {
 });
 
 app.post("/new/favourite", async (req, res) => {
+    
     try {
         await db.query(`INSERT INTO favourites VALUES ($1, $2)`, [
             req.body.userName,
