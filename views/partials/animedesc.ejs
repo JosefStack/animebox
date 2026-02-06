@@ -89,6 +89,12 @@
 
                 </div>
                 <div class="info-right">
+                    <div class="description">
+                        <p>Synopsis:</p>
+                        <p>
+                            <%= info.synopsis %>
+                        </p>
+                    </div>
                     <p>Japanese: <%= info.name_jap %>
                     </p>
                     <p>Status: <%= info.status %>
@@ -115,28 +121,28 @@
 
                     <div class="studios">
                         <p>Studios:</p>
-                        
 
-                            <span>
-                                <% info.studios.forEach((studio)=> { %>
+
+                        <span>
+                            <% info.studios.forEach((studio)=> { %>
                                 <%= studio.name %>
-                                <% }) %>
-                            </span>
+                                    <% }) %>
+                        </span>
 
-                            
+
 
                     </div>
                     <div class="producers">
                         <p>Producers: </p>
-                        
 
-                            <span>
-                                <% info.producers.forEach((producer)=> { %>
-                                <%= producer.name %>, 
-                                <% }) %>
-                            </span>
 
-                            
+                        <span>
+                            <% info.producers.forEach((producer)=> { %>
+                                <%= producer.name %>,
+                                    <% }) %>
+                        </span>
+
+
 
                     </div>
                 </div>

@@ -1,0 +1,13 @@
+.emptyFav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 170px);
+    width: 100vw;
+    /* outline: 1px solid white; */
+}
+
+.emptyFav span {
+    /* outline: 1px solid blue; */
+}
+

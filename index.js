@@ -290,8 +290,9 @@ app.post("/delete/favourite", async (req, res) => {
     const userName = req.body.userId;
     const animeId = parseInt(req.body.animeId);
 
+    // console.log(req.body);
 
-    console.log(userName, animeId);
+    // console.log(userName, animeId);
 
     try {
 

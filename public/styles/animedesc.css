@@ -9,6 +9,7 @@ a {
 
 .container {
     position: relative;
+    width: 100%;
 }
 
 .background-img {
@@ -201,4 +202,59 @@ a {
 
 .favourites-btn:hover {
     transform: scale(1.04);
+}
+
+.info-right .description {
+    display: none;
+    font-weight: 600;
+}
+
+
+
+@media (max-width:1280px) {
+
+    .info-container {
+        flex-direction: column;
+        margin-top: 0px;
+    }
+
+    .info-right {
+        width:inherit;
+    }
+    
+    .info-left {
+        width: inherit;
+    }
+
+    .anime-name {
+        font-size: 32px;
+    }
+    
+
+}
+
+@media (max-width:910px) {
+
+    .info-left {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info-left-desc {
+        text-align: center;
+        align-items: center;
+    }
+
+    .info-left-desc .description {
+        display: none;
+    }
+
+    .info-right .description {
+        display: block;
+    }
+
+    .anime-name {
+        font-size: 28px;
+    }
+
 }

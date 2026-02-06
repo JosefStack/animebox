@@ -143,6 +143,25 @@ a {
     filter: brightness(0.75);
 }
 
+.analytics div {
+    display: flex;
+    gap: 5px;
+}
+
+.analytics {
+    /* justify-content: space-between; */
+}
+
+.remove-fav-btn input {
+    outline: none;
+    border: none;
+    padding: 1px 4px;
+    color: white;
+    background-color: #d81d27;
+    border-radius: 6px;
+}
+
+
 /* RESPONSIVE */
 @media (max-width: 1400px) {
     .top-cards-grid-container {
