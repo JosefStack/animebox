@@ -7,7 +7,7 @@ a {
     padding: 10px;
 }
 
-.container {
+.top-container {
     position: relative;
     width: 100%;
 }
@@ -207,6 +207,65 @@ a {
 .info-right .description {
     display: none;
     font-weight: 600;
+}
+
+
+.container2 {
+    position: relative;
+    width: inherit;
+    /* margin-top: 20px; */
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+
+.trailer, .reviews{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.trailer :nth-child(1), .reviews :nth-child(1) {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+iframe {
+    outline: none;
+    border: none;
+    width: 80%;
+    max-width: 560px; 
+    /* height: 315px;  */
+    aspect-ratio: 16/9;
+}
+
+.reviews {
+    /* outline: 1px solid white; */
+}
+
+.reviews form {
+    /* outline: 1px solid white; */
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 10px;
+}
+
+.reviews form :nth-child(1) {
+    /* outline: 2px solid yellow; */
+    /* width: 80%; */
+    border: none;
+    outline: none;
+}
+
+.reviews form :nth-child(2) {
+    /* outline: 2px solid yellow; */
+    width: fit-content;
+    border: none;
+    outline: none;
 }
 
 

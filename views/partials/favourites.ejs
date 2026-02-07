@@ -18,9 +18,10 @@
 
     <body>
 
-        <% if (favourites.length !==0) { %>
-            <div class="top-cards-grid-container">
-                <% if (!locals.error) { %>
+        <% if (!locals.error) { %>
+            <% if (favourites.length !==0) { %>
+                <div class="top-cards-grid-container">
+
 
 
 
@@ -81,18 +82,19 @@
                         </a>
 
                         <% }) %>
-                            <% } %>
-            </div>
 
-            <% } else { %>
-                <div class="emptyFav">
-                    <span>Feels lonely here...</span>
                 </div>
-                <% } %>
+
+                <% } else { %>
+                    <div class="emptyFav">
+                        <span>Feels lonely here...</span>
+                    </div>
+                    <% } %>
+                        <% } %>
 
 
 
-                
+
     </body>
 
     </html>

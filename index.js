@@ -176,8 +176,11 @@ app.get("/anime", async (req, res) => {
 
 app.get("/anime/:id", async (req, res) => {
     const URL = BASE_API + `/anime/${req.params.id}/full`;
-    // console.log(URL);
+    console.log(URL);
     const response = await axios.get(BASE_API + `/anime/${req.params.id}/full`);
+
+    const trailerParts = response.data.data.trailer.embed_url.split("?")[0].split("/");
+    const trailerId = trailerParts[trailerParts.length - 1];
 
     // console.log(response);
     const filtered = {
@@ -199,7 +202,9 @@ app.get("/anime/:id", async (req, res) => {
         relations: response.data.data.relations,
         image: response.data.data.images.jpg.image_url,
         studios: response.data.data.studios,
-        producers: response.data.data.producers
+        producers: response.data.data.producers,
+        trailer: response.data.data.trailer.embed_url,
+        trailerId: trailerId
     };
 
     // console.log(filtered);
