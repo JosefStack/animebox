@@ -207,9 +207,19 @@ app.get("/anime/:id", async (req, res) => {
         trailerId: trailerId
     };
 
+    let reviews = [];
+    try {
+        const result = await db.query("SELECT * FROM reviews WHERE anime_id=$1", [req.params.id])
+        reviews = result.rows;
+    }
+    catch (err) {
+        console.log(`Failed to load reviews: ${err.stack}`)
+    }
+
     // console.log(filtered);
     res.render("partials/animedesc.ejs", {
         info: filtered,
+        reviews: reviews,
     });
 });
 
@@ -284,11 +294,13 @@ app.post("/new/favourite", async (req, res) => {
             req.body.userName,
             parseInt(req.body.animeId),
         ]);
+        res.redirect(`/anime/${req.body.animeId}`);
     } catch (err) {
         console.log(`Failed to add favourite: ${err.stack}`);
+        res.redirect(`/anime/${req.body.animeId}`);
     }
 
-    res.redirect(`/anime/${req.body.animeId}`);
+    
 });
 
 app.post("/delete/favourite", async (req, res) => {
@@ -314,6 +326,29 @@ app.post("/delete/favourite", async (req, res) => {
         console.log("err");
         res.redirect("/favourites")
     }
+
+})
+
+app.post("/new/review", (req, res) => {
+    const userId = req.body.userId;
+    const animeId = parseInt(req.body.animeId);
+    const review = req.body.review;
+    
+    
+    try {
+        db.query("INSERT INTO reviews VALUES ($1, $2, $3)", 
+            [animeId, userId, review]
+        );
+        res.redirect(`/anime/${animeId}`);
+    }
+    catch (err) {
+        console.log(`Failed to post review: ${err.stack}`);
+        res.redirect(`/anime/${animeId}`);
+    }
+
+
+
+    
 
 })
 

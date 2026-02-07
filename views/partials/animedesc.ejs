@@ -149,7 +149,7 @@
 
             </div>
 
-            
+
 
 
         </div>
@@ -158,9 +158,7 @@
             <div class="trailer">
                 <p>Trailer</p>
                 <iframe src="<%= info.trailer %>&loop=1&playlist=<%= info.trailerId %>"
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allow="autoplay; encrypted-media" 
-                    allowfullscreen>
+                    referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>
             </div>
 
@@ -168,17 +166,55 @@
 
                 <p>Reviews</p>
 
-                <form action="">
-                    <input type="textarea">
-                    <input type="submit" value="Submit">
-                </form>
+                <div class="existing">
+                    <% reviews.forEach((review)=> { %>
+
+                        <% if (review.review !=="" ) { %>
+                            <div class="review-item">
+                                <p>
+                                    <%= review.user_name %>
+                                </p>
+                                <p>
+                                    <%= review.review %>
+                                </p>
+                            </div>
+                            <% } %>
+
+
+                                <% }) %>
+
+                </div>
+
+
+                <% if(locals.user) { %>
+
+                    <form action="/new/review" method="POST">
+                        <input hidden type="text" name="animeId" value="<%= info.id %>">
+                        <input hidden type="text" name="userId" value="<%= user %>">
+                        <textarea class="review-input" name="review" id=""
+                            placeholder="Don't forget to drop a review!"></textarea>
+                        <input class="review-submit" type="submit" value="Submit">
+                    </form>
+
+                    <% } else { %>
+                        <form action="" method="n">
+                            <textarea class="review-input" name="review" id=""
+                                placeholder="Login to drop reviews!"></textarea>
+                        </form>
+                        <button class="review-submit" onclick="reviewAlert()">Submit</button>
+
+                        <div class="review-alert">
+                            <p>Action requires login!</p>
+                        </div>
+                        <% } %>
+
 
 
             </div>
 
         </div>
 
-        
+
 
 
 
@@ -199,6 +235,19 @@
 
         }
 
+        function reviewAlert() {
+
+            const alertbox = document.querySelector(".review-alert");
+
+            alertbox.style.opacity = "1";
+            alertbox.style.transform = "translateY(0)";
+
+            setTimeout(() => {
+                alertbox.style.opacity = "0";
+                alertbox.style.transform = "translateY(-200px)";
+            }, 1000)
+
+        }
 
 
     </script>

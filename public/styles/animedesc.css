@@ -3,6 +3,10 @@ a {
     text-decoration: none;
 }
 
+* {
+    font-family: "Poppins", sans-serif;
+}
+
 .info-wrapper {
     padding: 10px;
 }
@@ -175,7 +179,7 @@ a {
     font-weight: 600;
 }
 
-.favourites-alert {
+.favourites-alert, .review-alert {
     border-radius: 20px;
 
     border: 1px solid rgba(139, 139, 139, 1);
@@ -184,7 +188,9 @@ a {
     width: 350px;
     height: 25px;
 
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     position: absolute;
     top: -200px;
@@ -194,6 +200,24 @@ a {
     transition: 0.5s;
 
     color: rgba(218, 63, 63, 0.905);
+}
+
+.review-alert { 
+    font-size: 15px;
+    position: absolute;
+    top: 20px;
+    left: calc(50% - 175px);
+
+    transform: translateY(-200px); /* hidden */
+    opacity: 0;
+    transition: 0.5s;
+
+    z-index: 10; /* IMPORTANT */
+
+}
+
+.review-alert p {
+    font-size: inherit !important;
 }
 
 .favourites-btn {
@@ -242,9 +266,6 @@ iframe {
     aspect-ratio: 16/9;
 }
 
-.reviews {
-    /* outline: 1px solid white; */
-}
 
 .reviews form {
     /* outline: 1px solid white; */
@@ -254,18 +275,36 @@ iframe {
     gap: 10px;
 }
 
-.reviews form :nth-child(1) {
-    /* outline: 2px solid yellow; */
-    /* width: 80%; */
-    border: none;
-    outline: none;
+textarea::placeholder {
+    font-size: 15px;
 }
 
-.reviews form :nth-child(2) {
+.review-input {
+    /* outline: 2px solid yellow; */
+    /* width:   80%; */
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: rgba(13, 2, 2, 0.5);
+    color: white;
+    min-height: 150px;
+    border-radius: 7px;
+    font-size: 15px;
+    
+    font-weight: 200;
+}
+
+.review-submit {
     /* outline: 2px solid yellow; */
     width: fit-content;
     border: none;
     outline: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    background-color: rgb(130, 30, 30);
+    cursor: pointer;
+    
 }
 
 
@@ -314,6 +353,17 @@ iframe {
 
     .anime-name {
         font-size: 28px;
+    }
+
+}
+
+@media (max-width:520px) {
+    textarea {
+        width: 100%;
+    }
+
+    .reviews form {
+        width: 100%;
     }
 
 }
