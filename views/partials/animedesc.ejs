@@ -166,27 +166,26 @@
 
                 <p>Reviews</p>
 
+
                 <div class="existing">
                     <% reviews.forEach((review)=> { %>
 
-                        <% if (review.review !=="" ) { %>
+                        <% if (review.review !== "" ) { %>
                             <div class="review-item">
                                 <p>
-                                    <%= review.user_name %>
+                                    (<%= review.user_name %>)
                                 </p>
                                 <p>
                                     <%= review.review %>
                                 </p>
                             </div>
-                            <% } %>
-
-
-                                <% }) %>
+                        <% } %>
+                    <% }) %>
 
                 </div>
 
 
-                <% if(locals.user) { %>
+                <% if (locals.user) { %>
 
                     <form action="/new/review" method="POST">
                         <input hidden type="text" name="animeId" value="<%= info.id %>">

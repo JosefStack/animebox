@@ -278,6 +278,7 @@ app.get("/favourites", async (req, res) => {
         res.render("partials/favourites.ejs", {
             favourites: filtered,
         });
+        
     } catch (err) {
         console.log(`Failed to retrieve favourites: ${err.stack}`);
         res.render("partials/favourites.ejs", {

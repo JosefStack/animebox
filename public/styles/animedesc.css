@@ -307,6 +307,38 @@ textarea::placeholder {
     
 }
 
+.existing {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    /* outline: 1px solid white; */
+    width: 100%;
+}
+
+.review-item {
+    width: 79%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: rgba(13, 2, 2, 0.5);
+    color: white;
+    /* min-height: 150px; */
+    border-radius: 7px;
+    font-size: 15px;
+    
+    font-weight: 200 !important;
+}
+
+.review-item p {
+    font-size: 15px !important;
+    display: inline;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
 
 
 @media (max-width:1280px) {
@@ -365,5 +397,9 @@ textarea::placeholder {
     .reviews form {
         width: 100%;
     }
+
+    .review-item {
+    width: 100%;
+}
 
 }
