@@ -353,7 +353,7 @@ app.post("/new/review", (req, res) => {
 
 })
 
-app.get("/reviews", async (req, res) => { });
+app.get("/user/reviews", async (req, res) => { });
 
 app.get("/reviews/edit/:id", async (req, res) => { });
 
