@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="styles/favourites.css">
+        <link rel="stylesheet" href="styles/home.css">
+        <link rel="stylesheet" href="styles/anime.css">
+
+    </head>
+
+    <body>
+
+        <% if (!locals.error) { %>
+            <% if (favourites.length !==0) { %>
+                <div class="top-cards-grid-container">
+
+
+
+
+                    <% favourites.forEach((anime)=> { %>
+
+                        <a href="/anime/<%= anime.id %>" class="card-link">
+                            <div class="card-container">
+
+                                <div class="banner-container">
+                                    <div class="card-hover-banner">
+                                        <div class="card-hover-banner-top">
+                                            <p>
+                                                <%= anime.name %>
+                                            </p>
+                                        </div>
+
+                                        <div class="card-hover-banner-bottom">
+                                            <p>#<%= anime.rank %>
+                                            </p>
+                                            <p>
+                                                <%= anime.episodes %> episodes
+                                            </p>
+
+                                            <p><i class="ai-star"></i>
+                                                <%= anime.rating %>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <img src="<%= anime.images %>" alt="<%= anime.name %>">
+                                </div>
+
+                                <div class="text-container">
+                                    <p class="title">
+                                        <%= anime.name %>
+                                    </p>
+                                    <div class="analytics">
+                                        <div>
+                                            <p>#<%= anime.rank %>
+                                            </p>
+                                            <span>
+                                                <%= anime.views || "92.4K" %>
+                                            </span>
+                                        </div>
+
+                                        <div class="remove-fav-btn">
+                                            <form action="/delete/favourite" method="POST">
+                                                <input hidden type="text" name="userId" value="<%= user %>">
+                                                <input hidden type="text" name="animeId" value="<%= anime.id %>">
+                                                <input type="submit" value="Remove favourite">
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </a>
+
+                        <% }) %>
+
+                </div>
+
+                <% } else { %>
+                    <div class="emptyFav">
+                        <span>Feels lonely here...</span>
+                    </div>
+                    <% } %>
+                        <% } %>
+
+
+
+
+    </body>
+
+    </html>
