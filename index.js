@@ -3,6 +3,9 @@ import bodyParser from "body-parser";
 import axios from "axios";
 import pg from "pg";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -12,14 +15,15 @@ const BASE_API = "https://api.jikan.moe/v4";
 let sessions = {};
 
 const db = new pg.Client({
-    user: "postgres",
-    host: "localhost",
-    database: "anibox",
-    password: "postgres",
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false, // required for Supabase
+    },
 });
 
-db.connect();
+db.connect()
+    .then(() => console.log("Connected to Supabase!"))
+    .catch((err) => console.error("Database connection error:", err));
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
