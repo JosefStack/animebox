@@ -158,7 +158,7 @@ app.post("/signup", async (req, res) => {
 app.get("/anime", async (req, res) => {
     const response = await axios.get(BASE_API + "/top/anime");
 
-    const topAnime = response.data.data.slice;
+    const topAnime = response.data.data;
     // console.log(topAnime);
 
     const topAnimeFiltered = topAnime.map((anime) => ({
@@ -183,7 +183,10 @@ app.get("/anime/:id", async (req, res) => {
     console.log(URL);
     const response = await axios.get(BASE_API + `/anime/${req.params.id}/full`);
 
+    // console.log(response.data.data.trailer)
+
     const trailerParts = response.data.data.trailer.embed_url.split("?")[0].split("/");
+    console.log(trailerParts);
     const trailerId = trailerParts[trailerParts.length - 1];
 
     // console.log(response);
