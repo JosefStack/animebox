@@ -158,7 +158,7 @@ app.post("/signup", async (req, res) => {
 app.get("/anime", async (req, res) => {
     const response = await axios.get(BASE_API + "/top/anime");
 
-    const topAnime = response.data.data.slice(0, 20);
+    const topAnime = response.data.data.slice;
     // console.log(topAnime);
 
     const topAnimeFiltered = topAnime.map((anime) => ({
