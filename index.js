@@ -20,19 +20,15 @@ const BASE_API = "https://api.jikan.moe/v4";
 
 
 const db = new pg.Client({
-  // connectionString: process.env.DATABASE_URL,
-  // ssl: {
-  //     rejectUnauthorized: false,
-  // },
-  user: "postgres",
-  database: "anibox",
-  host: "localhost",
-  password: "postgres",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+      rejectUnauthorized: false,
+  },
+  
 });
 
 db.connect()
-  .then(() => console.log("Connected to local db!"))
+  .then(() => console.log("Connected to supabase db!"))
   .catch((err) => console.error("Database connection error:", err));
 
 app.use(express.static("public"));
@@ -454,30 +450,32 @@ passport.use("local",
 
 passport.use(
   "google",
-  new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/favourites",
-    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-  },
-  async (accessToken, refreshToken, profile, cb) => {
-    try {
-      const result = await db.query("SELECT * FROM users WHERE email=$1", [profile.email]);
-      if (result.rows.length === 0) {
-        const newUser = await db.query("INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3)",
-          [generateName(), profile.email, "google"]
-        );
-        return cb(null, newUser.rows[0]);
-      } else {
-        return cb(null, result.rows[0]);
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "https://anibox.onrender.com/auth/google/favourites",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+      try {
+        const result = await db.query("SELECT * FROM users WHERE email=$1", [
+          profile.email,
+        ]);
+        if (result.rows.length === 0) {
+          const newUser = await db.query(
+            "INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3)",
+            [generateName(), profile.email, "google"],
+          );
+          return cb(null, newUser.rows[0]);
+        } else {
+          return cb(null, result.rows[0]);
+        }
+      } catch (err) {
+        return cb(null, false, "signup failed");
       }
-    } catch (err) {
-      return cb(null, false, "signup failed")
-    }
-  }
-
-  )
-
+    },
+  ),
 );
 
 passport.serializeUser((user, cb) => {
