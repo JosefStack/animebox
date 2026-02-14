@@ -3,12 +3,18 @@ import bodyParser from "body-parser";
 import axios from "axios";
 import pg from "pg";
 import cookieParser from "cookie-parser";
+import bcrypt from "bcrypt";
+import session from "express-session";
+import passport from "passport";
+import { Strategy } from "passport-local";
+import GoogleStrategy from "passport-google-oauth2"
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
 const port = 3000;
+const saltRounds = 10;
 
 const BASE_API = "https://api.jikan.moe/v4";
 
@@ -17,13 +23,24 @@ let sessions = {};
 const db = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false, // required for Supabase
+        rejectUnauthorized: false, 
     },
 });
 
 db.connect()
     .then(() => console.log("Connected to Supabase!"))
     .catch((err) => console.error("Database connection error:", err));
+
+app.use(
+    session({
+        secret: process.env.SESSION_SIGNATURE,
+        resave: false,
+        saveunitialized: true,
+    })
+)
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
