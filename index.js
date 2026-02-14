@@ -8,6 +8,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import GoogleStrategy from "passport-google-oauth2";
 import dotenv from "dotenv";
+import generateName from "sillyname";
 
 dotenv.config();
 
@@ -101,7 +102,7 @@ app.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/anime",
-    failureRedirect: "/signup",
+    failureRedirect: "/login",
   }),
 );
 
@@ -398,6 +399,15 @@ app.post("/new/review", async (req, res) => {
   }
 });
 
+app.get("/auth/google", passport.authenticate("google", {
+  scope: ["profile", "email"],
+}));
+
+app.get("/auth/google/favourites", passport.authenticate("google", {
+  successRedirect: "/favourites", 
+  failureRedirect: "/login",
+}))
+
 app.get("/user/reviews", async (req, res) => {});
 
 app.get("/reviews/edit/:id", async (req, res) => {});
@@ -440,6 +450,34 @@ passport.use("local",
     }
   )
 )
+
+passport.use(
+  "google",
+  new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/favourites",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+  },
+  async (accessToken, refreshToken, profile, cb) => {
+    try {
+      const result = await db.query("SELECT * FROM users WHERE email=$1", [profile.email]);
+      if (result.rows.length === 0) {
+        const newUser = await db.query("INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3)",
+          [generateName(), profile.email, "google"]
+        );
+        return cb(null, newUser.rows[0]);
+      } else {
+        return cb(null, result.rows[0]);
+      }
+    } catch (err) {
+      return cb(null, false, "signup failed")
+    }
+  }
+
+  )
+
+);
 
 passport.serializeUser((user, cb) => {
   cb(null, user);

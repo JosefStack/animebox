@@ -8,8 +8,8 @@
 
     <link rel="stylesheet" href="/styles/login.css">
 
-    <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap" rel="stylesheet"> 
-
+    <link href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/akar-icons-fonts"></script>
 </head>
 
 <body>
@@ -21,29 +21,46 @@
 
         <div class="signup-container">
 
-            <form class="signup-form" action="/login" method="POST">
+            <div class="signup-wrapper">
+                <div class="local-signup">
+                    <form class="signup-form" action="/login" method="POST">
 
-                <div>
-                    <input id="signup-email" type="text" name="userName" placeholder="Enter username">
-                    <label for="signup-email">Username</label>
+                        <div>
+                            <input id="signup-email" type="text" name="userName" placeholder="Enter username">
+                            <label for="signup-email">Username</label>
+                        </div>
+
+                        <div>
+                            <input id="signup-pass" type="text" name="userPassword" placeholder="Enter password here">
+                            <label for="signup-pass">Enter Password</label>
+                        </div>
+
+                        <div>
+                            <input type="submit" value="Login">
+                        </div>
+
+                        <!-- <div>
+                                        <input id="signup-pass-confirm" type="text" name="newUserPasswordConfirm"
+                                            placeholder="Enter password again">
+                                        <label for="signup-pass-confirm">Confirm Password</label>
+                                    </div> -->
+
+                    </form>
                 </div>
+                <div class="auth-separation"></div>
 
-                <div>
-                    <input id="signup-pass" type="text" name="userPassword" placeholder="Enter password here">
-                    <label for="signup-pass">Enter Password</label>
+                <div class="oauth">
+                    <div class="google">
+                        <a href="/auth/google">
+                            <i class="ai-google-fill"></i>
+                            <span>Sign up with google</span>
+                        </a>
+                    </div>
+
                 </div>
+            </div>
 
-                <div>
-                    <input type="submit" value="Create account">
-                </div>
 
-                <!-- <div>
-                    <input id="signup-pass-confirm" type="text" name="newUserPasswordConfirm"
-                        placeholder="Enter password again">
-                    <label for="signup-pass-confirm">Confirm Password</label>
-                </div> -->
-
-            </form>
 
             <span>
                 Don't have an account? <a href="/signup">Signup</a>

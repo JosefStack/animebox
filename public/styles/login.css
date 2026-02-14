@@ -24,8 +24,8 @@ main > span {
 main {
     box-shadow: rgb(4, 6, 8) 0px 20px 40px -10px;
     /* outline: 1px solid white; */
-    width: 30%;
-    height: 50%;
+    width: 40%;
+    height: fit-content;
     border-radius: 40px;
 
     display: flex;
@@ -37,6 +37,12 @@ main {
 
     background-image: linear-gradient(#3e0000 0%, 53%, #000 100%, 100%, #3e0000 0%)
 
+}
+
+.auth-separation {
+    outline: 1px solid rgb(30, 29, 29);
+    border-radius: 20px;
+    height: 250px;
 }
 
 .signup-container {
@@ -92,15 +98,47 @@ main > span {
     color: rgb(37, 74, 198);
 }
 
+.signup-wrapper {
+    display: flex;
+    /* outline: 1px solid white; */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.google {
+    outline: 1px solid rgb(122, 121, 121);
+    border-radius: 20px;
+    padding: 10px;
+    background: rgb(21, 19, 19);
+}
+
+
+.signup-container a {
+    color: white;
+}
+
 @media (max-width:1280px) {
     main {
         width: 40%;
     }
 
     .signup-container {
-        width: 70%;
+        width: 95%;
     }
 
+}
+
+@media (max-width:1050px) {
+    .signup-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .auth-separation {
+        width: 70%;
+        height: 0px;
+    }
 }
 
 @media (max-width:960px) {
