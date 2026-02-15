@@ -18,13 +18,11 @@ const saltRounds = 10;
 
 const BASE_API = "https://api.jikan.moe/v4";
 
-
 const db = new pg.Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-      rejectUnauthorized: false,
+    rejectUnauthorized: false,
   },
-  
 });
 
 db.connect()
@@ -40,15 +38,13 @@ app.use(
     secret: process.env.SESSION_SIGNATURE,
     resave: false,
     saveUninitialized: true,
-  }), 
+  }),
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(authMiddleware)
-
-
+app.use(authMiddleware);
 
 function authMiddleware(req, res, next) {
   if (req.isAuthenticated()) {
@@ -121,7 +117,9 @@ app.post("/signup", async (req, res) => {
   const email = req.body.newUserMail;
   const password = req.body.newUserPassword;
   try {
-    const checkResult = await db.query("SELECT * FROM users WHERE email=$1", [email]);
+    const checkResult = await db.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
     if (checkResult.rows.length > 0) {
       res.redirect("/login");
     } else {
@@ -132,7 +130,7 @@ app.post("/signup", async (req, res) => {
           const result = await db.query(
             "INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3) RETURNING *",
             [username, email, hash],
-          );  
+          );
           const user = result.rows[0];
           console.log(result);
           req.login(user, (err) => {
@@ -151,7 +149,6 @@ app.get("/anime", async (req, res) => {
 
   const topAnime = response.data.data;
   // console.log(topAnime);
-  
 
   const topAnimeFiltered = topAnime.map((anime) => ({
     id: anime.mal_id,
@@ -226,8 +223,6 @@ app.get("/anime/:id", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  
-
   try {
     const result = await db.query(
       "SELECT * FROM favourites WHERE user_name=$1",
@@ -285,61 +280,73 @@ app.get("/profile", async (req, res) => {
 });
 
 app.get("/favourites", async (req, res) => {
-  const userId = req.user.user_name;
+  if (req.isAuthenticated()) {
+    const userId = req.user.user_name;
 
-  try {
-    const result = await db.query(
-      "SELECT * FROM favourites WHERE user_name=$1",
-      [userId],
-    );
-    const animeId = result.rows;
+    try {
+      const result = await db.query(
+        "SELECT * FROM favourites WHERE user_name=$1",
+        [userId],
+      );
+      // const animeId = result.rows;
 
-    const favouriteIds = [];
-    const favouriteData = [];
+      const favouriteIds = [];
+      const favouriteData = [];
 
-    result.rows.forEach((row) => {
-      favouriteIds.push(row.anime_id);
-    });
+      result.rows.forEach((row) => {
+        favouriteIds.push(row.anime_id);
+      });
 
-    for (const favourite of favouriteIds) {
-      const URL = BASE_API + `/anime/${favourite}/full`;
-      console.log(URL);
-      const response = await axios.get(URL);
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-      favouriteData.push(response.data.data);
+      for (let i = 0; i < favouriteIds.length; i += 2) {
+        const batch = favouriteIds.slice(i, i + 2);
+
+        const responses = await Promise.all(
+          batch.map((id) => axios.get(`${BASE_API}/anime/${id}/full`)),
+        );
+
+        responses.forEach((res) => {
+          favouriteData.push(res.data.data);
+        });
+
+        await delay(1000);
+      }
+
+      const filtered = await favouriteData.map((favourite) => ({
+        id: favourite.mal_id,
+        // name_english: favourite.title_english,
+        // name_jap: favourite.title,
+        name: favourite.title_english,
+        episodes: favourite.episodes,
+        aired: favourite.aired.string,
+        duration: favourite.duration,
+        ageRating: favourite.rating,
+        rating: favourite.score,
+        // rated_by: favourite.scored_by,
+        people: favourite.scored_by,
+        rank: favourite.rank,
+        favourites: favourite.favorites,
+        synopsis: favourite.synopsis,
+        background: favourite.background,
+        genres: favourite.genres,
+        relations: favourite.relations,
+        images: favourite.images.jpg.image_url,
+      }));
+
+      // console.log(filtered);
+
+      res.render("partials/favourites.ejs", {
+        favourites: filtered,
+      });
+    } catch (err) {
+      console.log(`Failed to retrieve favourites: ${err.stack}`);
+      res.render("partials/favourites.ejs", {
+        error: "Failed to retrieve favourites!",
+      });
     }
-
-    const filtered = favouriteData.map((favourite) => ({
-      id: favourite.mal_id,
-      // name_english: favourite.title_english,
-      // name_jap: favourite.title,
-      name: favourite.title_english,
-      episodes: favourite.episodes,
-      aired: favourite.aired.string,
-      duration: favourite.duration,
-      ageRating: favourite.rating,
-      rating: favourite.score,
-      // rated_by: favourite.scored_by,
-      people: favourite.scored_by,
-      rank: favourite.rank,
-      favourites: favourite.favorites,
-      synopsis: favourite.synopsis,
-      background: favourite.background,
-      genres: favourite.genres,
-      relations: favourite.relations,
-      images: favourite.images.jpg.image_url,
-    }));
-
-    // console.log(filtered);
-
-    res.render("partials/favourites.ejs", {
-      favourites: filtered,
-    });
-  } catch (err) {
-    console.log(`Failed to retrieve favourites: ${err.stack}`);
-    res.render("partials/favourites.ejs", {
-      error: "Failed to retrieve favourites!",
-    });
+  } else {
+    res.redirect("/login")
   }
 });
 
@@ -396,30 +403,38 @@ app.post("/new/review", async (req, res) => {
   }
 });
 
-app.get("/auth/google", passport.authenticate("google", {
-  scope: ["profile", "email"],
-}));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  }),
+);
 
-app.get("/auth/google/favourites", passport.authenticate("google", {
-  successRedirect: "/favourites", 
-  failureRedirect: "/login",
-}))
+app.get(
+  "/auth/google/favourites",
+  passport.authenticate("google", {
+    successRedirect: "/favourites",
+    failureRedirect: "/login",
+  }),
+);
 
 app.get("/user/reviews", async (req, res) => {});
 
 app.get("/reviews/edit/:id", async (req, res) => {});
 
-passport.use("local", 
+passport.use(
+  "local",
   new Strategy(
     {
       usernameField: "userName",
-      passwordField: "userPassword"
+      passwordField: "userPassword",
     },
     async function verify(userName, userPassword, cb) {
       try {
-        const result = await db.query("SELECT * FROM users WHERE user_name=$1", [
-          userName
-        ]);
+        const result = await db.query(
+          "SELECT * FROM users WHERE user_name=$1",
+          [userName],
+        );
         // console.log(result.rows);
         if (result.rows.length > 0) {
           const user = result.rows[0];
@@ -436,18 +451,15 @@ passport.use("local",
               }
             }
           });
-
         } else {
-            return cb(null, false, "User not found");
+          return cb(null, false, "User not found");
         }
-
       } catch (err) {
         console.log(`Error: ${err}`);
       }
-    }
-  )
-)
-
+    },
+  ),
+);
 
 passport.use(
   "google",
@@ -455,9 +467,10 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.NODE_ENV === "production" ?
-      "https://anibox.onrender.com/auth/google/favourites"
-      : "http://localhost:3000/auth/google/favourites",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://anibox.onrender.com/auth/google/favourites"
+          : "http://localhost:3000/auth/google/favourites",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
