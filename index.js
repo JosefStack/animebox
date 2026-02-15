@@ -151,6 +151,7 @@ app.get("/anime", async (req, res) => {
 
   const topAnime = response.data.data;
   // console.log(topAnime);
+  
 
   const topAnimeFiltered = topAnime.map((anime) => ({
     id: anime.mal_id,
@@ -454,7 +455,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://anibox.onrender.com/auth/google/favourites",
+      callbackURL: process.env.NODE_ENV === "production" ?
+      "https://anibox.onrender.com/auth/google/favourites"
+      : "http://localhost:3000/auth/google/favourites",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
@@ -464,7 +467,7 @@ passport.use(
         ]);
         if (result.rows.length === 0) {
           const newUser = await db.query(
-            "INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3)",
+            "INSERT INTO users (user_name, email, password) VALUES ($1, $2, $3) RETURNING *",
             [generateName(), profile.email, "google"],
           );
           return cb(null, newUser.rows[0]);
